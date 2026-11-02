@@ -2,11 +2,11 @@
 window.SESSION_CONFIG = {
   // Your Slido event: paste the participant link (slido.com > Share > copy link)
   // and the event code shown to participants, e.g. "#1234567".
-  slidoLink: "",
-  slidoCode: "",
+  slidoLink: "https://app.sli.do/event/cV5siYv88wCtemNSRbhuEr",
+  slidoCode: "4182188",
   // Moodle links for the Teachable Machine activity.
-  moodleImages: "",  // the page or folder holding the 15 picture sets
-  moodleForum: "",   // the forum where groups post their failures
+  moodleImages: "https://www.um.edu.mt/vle/mod/folder/view.php?id=1620077",  // the page or folder holding the 15 picture sets
+  moodleForum: "https://www.um.edu.mt/vle/mod/forum/view.php?id=1674908",   // the forum where groups post their failures
   // Words the facilitator says aloud to unlock the answers.
   revealWord: "GOZO",        // Teach the Alien
   revealWordRobo: "THUNDER"  // The Robo-Marker
