@@ -6,6 +6,12 @@
 <title>How AI Works: Session 1</title>
 <link rel="stylesheet" href="assets/style.css">
 <script src="assets/config.js"></script>
+<style>
+  .agenda .time { font-family: 'Fraunces', Georgia, serif; font-size: 1.4rem; color: var(--accent); }
+  .slido { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between; background: var(--ink); color: #fff; border-radius: var(--radius); padding: 18px 20px; margin-bottom: 20px; }
+  .slido strong { font-size: 1.15rem; }
+  .slido .code { font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; color: #ffd59e; }
+</style>
 </head>
 <body>
 <div class="topbar"><div class="wrap">
@@ -14,6 +20,7 @@
   <a href="sort.html">Rule or learned?</a>
   <a href="alien.html">Teach the Alien</a>
   <a href="teachable.html">Teachable Machine</a>
+  <a href="robo.html">The Robo-Marker</a>
   <a href="chain.html">Word by word</a>
 </div></div>
 
@@ -24,19 +31,23 @@
     <p class="lead">Today we look under the bonnet. By the end you should be able to tell AI, machine learning, deep learning and generative AI apart, and explain from your own experience how a machine learning model learns from data, and why it sometimes learns the wrong thing.</p>
   </header>
 
+  <div class="slido">
+    <div><strong>Join us on Slido</strong><br>Go to slido.com and enter <span class="code" data-slido-code></span></div>
+    <a class="btn coral" data-form="slido" href="#">Open Slido</a>
+  </div>
+
   <section class="card">
-    <h2 style="margin-top:0">Today's plan</h2>
+    <h2 style="margin-top:0">Today's activities</h2>
     <ol class="agenda">
       <li>
-        <div class="time">0:00</div>
+        <div class="time">1</div>
         <div class="what">
           <h3>Which of these use AI?</h3>
-          <p>A quick poll before we start. Answer honestly; we come back to it at the end.</p>
-          <a class="btn" data-form="poll" href="#">Open the poll</a>
+          <p>A quick Slido poll before we start. Answer honestly; we come back to it at the end.</p>
         </div>
       </li>
       <li>
-        <div class="time">0:10</div>
+        <div class="time">2</div>
         <div class="what">
           <h3>Rule-based or learned from data?</h3>
           <p>From AI to generative AI, one layer at a time. Then sort everyday technologies by how they make decisions.</p>
@@ -44,27 +55,31 @@
         </div>
       </li>
       <li>
-        <div class="time">0:30</div>
+        <div class="time">3</div>
         <div class="what">
           <h3>Teach the Alien</h3>
-          <p>Work out what makes a Glorp a Glorp, then test your rule on creatures you have never seen.</p>
+          <p>Unplugged. Work out what makes a Glorp a Glorp, then test your rule on creatures you have never seen.</p>
           <a class="btn" href="alien.html">Meet the creatures</a>
         </div>
       </li>
-      <li class="break">
-        <div class="time">0:50</div>
-        <div class="what"><h3>Break</h3><p>Ten minutes.</p></div>
-      </li>
       <li>
-        <div class="time">1:00</div>
+        <div class="time">4</div>
         <div class="what">
           <h3>Train it, then break it</h3>
-          <p>Build a classifier for your own subject in Teachable Machine, then find out what makes it fail.</p>
+          <p>Every group trains a cat or dog classifier on different pictures. Then hunt the web for pictures that fool it, and post your best failure to the Moodle forum.</p>
           <a class="btn" href="teachable.html">Get your challenge card</a>
         </div>
       </li>
       <li>
-        <div class="time">1:35</div>
+        <div class="time">5</div>
+        <div class="what">
+          <h3>The Robo-Marker</h3>
+          <p>Unplugged. A model learns to mark science answers from a teacher's examples. What has it really learned, and who loses out?</p>
+          <a class="btn" href="robo.html">Open the answers</a>
+        </div>
+      </li>
+      <li>
+        <div class="time">6</div>
         <div class="what">
           <h3>Word by word</h3>
           <p>Play the part of a language model and see how fluent, confident text can be entirely made up.</p>
@@ -72,11 +87,10 @@
         </div>
       </li>
       <li>
-        <div class="time">1:50</div>
+        <div class="time">7</div>
         <div class="what">
           <h3>Exit ticket</h3>
-          <p>Five minutes, a few questions, and a second look at the opening poll.</p>
-          <a class="btn" data-form="exit" href="#">Open the exit ticket</a>
+          <p>A short Slido quiz and a second look at the opening poll.</p>
         </div>
       </li>
     </ol>
@@ -87,11 +101,11 @@
     <div class="grid grid-2">
       <div class="card">
         <h3>Devices</h3>
-        <p>Everything here works on a laptop or tablet. For Teachable Machine, at least one device in your group needs a camera, and a laptop is easier for the pose activities.</p>
+        <p>Everything here works on a laptop or tablet. For Teachable Machine you need to download a zip from Moodle, upload pictures and take a screenshot, so check you can do all three on your device.</p>
       </div>
       <div class="card">
         <h3>Groups</h3>
-        <p>Work in subject groups of three or four. Use the same group name every time you submit a form so we can follow your thinking across the session.</p>
+        <p>Work in subject groups of three or four. When Slido asks for a name, use your group name so we can follow your thinking across the session.</p>
       </div>
     </div>
   </section>

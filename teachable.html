@@ -8,10 +8,7 @@
 <script src="assets/config.js"></script>
 <style>
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 18px; }
-  .chips button {
-    min-height: 44px; padding: 6px 16px; border-radius: 999px; border: 2px solid var(--line);
-    background: #fff; font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer; color: var(--ink);
-  }
+  .chips button { min-height: 44px; padding: 6px 16px; border-radius: 999px; border: 2px solid var(--line); background: #fff; font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer; color: var(--ink); }
   .chips button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
   .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
   .tm { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
@@ -27,10 +24,28 @@
   .t-audio header { background: var(--coral); }
   .t-pose header { background: #6c449c; }
   .t-any header { background: var(--ink); }
-  .challenge { display: grid; grid-template-columns: 48px 1fr; gap: 12px; align-items: start; }
-  .challenge .ico { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: var(--coral-soft); color: var(--coral); font-weight: 700; font-size: 1.2rem; }
-  .challenge h3 { margin-bottom: 2px; }
-  .challenge p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+  .phase { display: flex; align-items: center; gap: 10px; margin: 36px 0 8px; }
+  .phase .num { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; font-weight: 700; flex: none; }
+  .phase h2 { margin: 0; }
+  .audit { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); margin: 0; padding: 0; list-style: none; }
+  .audit li { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: .95rem; }
+  .audit li strong { display: block; }
+  .idea { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; }
+  .idea .ico { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--coral-soft); color: var(--coral); font-weight: 700; }
+  .idea h3 { margin-bottom: 2px; font-size: 1.05rem; }
+  .idea p { margin: 0; color: var(--muted); font-size: .95rem; }
+  .template {
+    background: #fff; border: 2px dashed var(--accent); border-radius: var(--radius); padding: 16px 18px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .9rem; line-height: 1.6;
+    white-space: pre-wrap; word-break: break-word; margin: 0;
+  }
+  table.keys { width: 100%; border-collapse: collapse; font-size: .95rem; }
+  table.keys td { padding: 8px 10px; border-top: 1px solid var(--line); vertical-align: top; }
+  table.keys td:first-child { font-weight: 700; white-space: nowrap; }
+  kbd { font-family: inherit; font-size: .85em; background: #eeeae2; border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
+  details.ext > summary { cursor: pointer; font-weight: 700; font-size: 1.1rem; padding: 6px 0; }
+  #copied { margin-left: 10px; color: var(--good); font-weight: 700; }
 </style>
 </head>
 <body>
@@ -40,49 +55,119 @@
   <a href="sort.html">Rule or learned?</a>
   <a href="alien.html">Teach the Alien</a>
   <a href="teachable.html">Teachable Machine</a>
+  <a href="robo.html">The Robo-Marker</a>
   <a href="chain.html">Word by word</a>
 </div></div>
 
 <main class="wrap">
   <header class="hero">
-    <span class="kicker">Activity 3 &middot; hands on</span>
+    <span class="kicker">Activity 4 &middot; hands on</span>
     <h1>Train it, then break it</h1>
-    <p class="lead">You will build a real image, sound or pose classifier for your subject in about fifteen minutes. Then you will spend the rest of the time trying to make it fail. The failures are the point: each one tells you something about how the model learned.</p>
+    <p class="lead">Every group trains a cat or dog classifier, but no two groups get the same training pictures. Your job is to find out what your model really learned, then hunt the web for pictures that fool it. The best failure is not the funniest one. It is the one you predicted and can explain.</p>
   </header>
 
+  <div class="phase"><span class="num">1</span><h2>Train your model</h2></div>
   <section class="card">
-    <h2 style="margin-top:0">Getting started</h2>
     <ol class="steps">
-      <li>Open <a href="https://teachablemachine.withgoogle.com/train" target="_blank" rel="noopener">Teachable Machine</a> and choose <strong>Image</strong>, <strong>Audio</strong> or <strong>Pose</strong> to match your card below. For Image, pick the standard image model.</li>
-      <li>Rename each class with your labels. Add a class if your card has three.</li>
-      <li>Collect examples for every class using the webcam or microphone. Hold the record button and move the object around so you get different angles.</li>
-      <li>Press <strong>Train Model</strong> and keep the tab open while it trains. On a tablet this can take a little longer.</li>
-      <li>Test it live in the Preview panel. Note how confident the model is for each class.</li>
-      <li>Work through the four challenges below, then fill in the form.</li>
+      <li>Download <strong>your group's picture set</strong> from Moodle (your set number is your group number) and unzip it. Inside are two folders: <strong>Cats</strong> and <strong>Dogs</strong>. On an iPad, tap the zip in the Files app to unzip it.
+        <div class="btn-row" style="margin-top:8px"><a class="btn ghost" data-link="moodleImages" href="#">Picture sets on Moodle</a></div></li>
+      <li>Open <a href="https://teachablemachine.withgoogle.com/train/image" target="_blank" rel="noopener">Teachable Machine</a> and start an <strong>Image project</strong> with the <strong>Standard image model</strong>.</li>
+      <li>Rename Class 1 to <strong>Cat</strong> and Class 2 to <strong>Dog</strong>.</li>
+      <li>In the Cat class, choose <strong>Upload</strong> and select every picture in the Cats folder. Do the same for Dogs. On a laptop you can drag the whole set of files in at once.</li>
+      <li>Press <strong>Train Model</strong> and keep the tab open until it finishes. On a tablet this takes a little longer.</li>
     </ol>
-    <p class="note teal" style="margin:8px 0 0">Training happens in your browser and your images are not uploaded unless you choose to save the project to Google Drive. If you try this in school, check your school's policy before recording pupils' faces or voices.</p>
+    <p class="note teal" style="margin:8px 0 0">Training happens in your browser. Your pictures are not uploaded anywhere unless you choose to save the project to Google Drive.</p>
   </section>
 
-  <h2>Pick your subject card</h2>
-  <div class="chips" id="chips" role="group" aria-label="Filter by subject"></div>
-  <div class="cards" id="cards"></div>
+  <div class="phase"><span class="num">2</span><h2>Audit your training data</h2></div>
+  <p>Before you test anything, look through your own pictures as a group. A model can only learn from what it was shown, so its blind spots are in this list. Jot down what you notice.</p>
+  <ul class="audit">
+    <li><strong>How many?</strong>Are there about as many cats as dogs, or is one class much bigger?</li>
+    <li><strong>Which breeds and colours?</strong>What kinds of cat and dog are there? Which are missing?</li>
+    <li><strong>How old?</strong>Kittens and puppies, adults, or a mix?</li>
+    <li><strong>Where?</strong>Indoors, outdoors, grass, sofas, plain backgrounds? Is one class always in the same kind of place?</li>
+    <li><strong>How are they shown?</strong>Close-up faces, whole bodies, odd angles, with people?</li>
+    <li><strong>Anything odd?</strong>Duplicates, blurry photos, a picture in the wrong folder?</li>
+  </ul>
 
-  <h2>Four ways to break it</h2>
-  <p>Try each one. Record what happened to the confidence bars, not just whether the answer was right.</p>
+  <div class="phase"><span class="num">3</span><h2>Predict, then hunt</h2></div>
+  <p>Choose a gap from your audit and write down <strong>which picture you think will fool the model, and why</strong>, before you search. Then find a picture on the web, save it, and test it: in the Preview panel, switch the input from <strong>Webcam</strong> to <strong>File</strong> and upload it.</p>
   <div class="grid grid-2">
-    <div class="card challenge"><div class="ico">1</div><div><h3>The stranger</h3><p>Train with one person's hands, face or voice, then test with someone else in the group. Does it work equally well for everyone?</p></div></div>
-    <div class="card challenge"><div class="ico">2</div><div><h3>The new room</h3><p>Change the background, the lighting or where you stand. Hold the object in front of a busy poster or a window.</p></div></div>
-    <div class="card challenge"><div class="ico">3</div><div><h3>The lopsided class</h3><p>Start a fresh model with about 60 examples of one class and only 6 of another. Which class does it favour when it is unsure?</p></div></div>
-    <div class="card challenge"><div class="ico">4</div><div><h3>The impostor</h3><p>Show it something that belongs to none of your classes. It has no way of saying "I don't know". How confident is its wrong answer?</p></div></div>
+    <div class="card idea"><div class="ico">1</div><div><h3>Something missing</h3><p>A breed, colour or age that is not in your set. A Siamese, a Sphynx, a Pomeranian, a kitten.</p></div></div>
+    <div class="card idea"><div class="ico">2</div><div><h3>The wrong place</h3><p>If your cats were mostly indoors, try a cat in a garden. Does the background matter more than the animal?</p></div></div>
+    <div class="card idea"><div class="ico">3</div><div><h3>A hard view</h3><p>From behind, from above, curled up asleep, half hidden under a blanket.</p></div></div>
+    <div class="card idea"><div class="ico">4</div><div><h3>The impostor</h3><p>A fox, a lion, a cartoon cat, a toy dog. The model has no way to say "neither". How sure is its wrong answer?</p></div></div>
+  </div>
+  <p class="note" style="margin-top:14px">Keep SafeSearch on. Pictures from the web are fine for testing here, but don't republish them.</p>
+
+  <div class="phase"><span class="num">4</span><h2>Capture the failure</h2></div>
+  <p>Take a screenshot that shows <strong>both</strong> the picture and the confidence bars in the Preview panel.</p>
+  <div class="card">
+    <table class="keys">
+      <tr><td>Windows</td><td><kbd>Windows</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>, then drag around the Preview panel</td></tr>
+      <tr><td>Mac</td><td><kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>4</kbd>, then drag around the Preview panel</td></tr>
+      <tr><td>iPad</td><td>Press the top button and volume up together</td></tr>
+      <tr><td>Chromebook</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Show windows</kbd></td></tr>
+    </table>
   </div>
 
-  <div class="card" style="margin-top:20px">
-    <h3>Record what you found</h3>
-    <p>One form per group: what you trained, what broke it, and why you think it broke. We will look at the best failures together.</p>
-    <a class="btn" data-form="teachable" href="#">Open the form</a>
+  <div class="phase"><span class="num">5</span><h2>Post it to the Moodle forum</h2></div>
+  <p>One post per failure. Copy the template, fill in the gaps, and attach <strong>two files</strong>: the picture you found and your screenshot.</p>
+  <pre class="template" id="tpl">Subject: Group [number]: [what you showed it] fooled our model
+
+OUR TRAINING SET
+Set [number]: [how many cats] cats, [how many dogs] dogs.
+What we noticed in our audit: [breeds, colours, ages, backgrounds, anything odd]
+
+OUR PREDICTION (written before we tested)
+We thought this picture would fool the model because ...
+
+WHAT HAPPENED
+The model said [Cat / Dog] with [  ]% confidence.
+The picture was really [a ...].
+
+WHY WE THINK IT FAILED
+In our training data ...
+
+HOW WE WOULD FIX IT
+We would add pictures of ...
+
+CROSS-TEST (optional)
+Group [number]'s model said [Cat / Dog] with [  ]% confidence.
+
+Attached: the picture we found + our screenshot</pre>
+  <div class="btn-row">
+    <button class="btn" type="button" id="copy">Copy the template</button>
+    <a class="btn ghost" data-link="moodleForum" href="#">Open the forum</a>
+    <span id="copied" aria-live="polite"></span>
+  </div>
+
+  <div class="phase"><span class="num">6</span><h2>Cross-test</h2></div>
+  <p>Send your best picture to a neighbouring group and ask them to run it through <em>their</em> model. If it fools yours but not theirs, the difference has to be in the training data, because everything else was the same.</p>
+
+  <div class="card" style="margin-top:28px">
+    <details class="ext">
+      <summary>Finished early? Try a model for your own subject</summary>
+      <p style="margin-top:10px">Build a second model with the webcam or microphone. Pick a card, collect your own examples, and try to break it in the same way.</p>
+      <div class="chips" id="chips" role="group" aria-label="Filter by subject"></div>
+      <div class="cards" id="cards"></div>
+    </details>
   </div>
 </main>
 
+<script>
+document.getElementById("copy").addEventListener("click", function () {
+  var text = document.getElementById("tpl").textContent, msg = document.getElementById("copied");
+  function done() { msg.textContent = "Copied"; setTimeout(function () { msg.textContent = ""; }, 2500); }
+  function fallback() {
+    var r = document.createRange(); r.selectNodeContents(document.getElementById("tpl"));
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    try { document.execCommand("copy"); done(); } catch (e) { msg.textContent = "Selected: copy it now"; }
+  }
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fallback);
+  else fallback();
+});
+</script>
 <script>
 var CARDS = [
   { s: "Science", t: "image", title: "Lab equipment",
@@ -128,7 +213,7 @@ var CARDS = [
   { s: "Any subject", t: "any", title: "Your own idea",
     classes: "Two or three classes from something you teach. Keep them visual, audible or physical.",
     collect: "Aim for variety in every class: different people, angles and backgrounds.",
-    breakit: ["Use the four challenges below.", "Find the input that gives the most confident wrong answer."],
+    breakit: ["Use the four hunting ideas above.", "Find the input that gives the most confident wrong answer."],
     think: "Would building this model teach your pupils anything about your subject, or only about AI?" }
 ];
 var TYPE = { image: "Image project", audio: "Audio project", pose: "Pose project", any: "Image, audio or pose" };

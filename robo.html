@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Robo-Marker</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/config.js"></script>
+<style>
+  .round { display: flex; align-items: center; gap: 10px; margin: 36px 0 8px; }
+  .round .num { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: #fff; font-weight: 700; flex: none; }
+  .round h2 { margin: 0; }
+  .question { background: var(--ink); color: #fff; border-radius: var(--radius); padding: 18px 20px; }
+  .question .q { font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.2rem, 3vw, 1.5rem); line-height: 1.35; }
+  .question .meta { font-size: .85rem; opacity: .75; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+  .answers { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .ans { background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+  .ans .txt { font-size: 1.02rem; }
+  .ans .txt::before { content: "\201C"; } .ans .txt::after { content: "\201D"; }
+  .ans.yes { border-color: #9fd0b2; background: #f3faf5; }
+  .ans.no { border-color: #e7b7b7; background: #fcf4f4; }
+  .mark { font-weight: 700; font-size: .9rem; }
+  .ans.yes .mark { color: var(--good); } .ans.no .mark { color: var(--bad); }
+  .ans .letter { font-family: 'Fraunces', Georgia, serif; font-size: 1.3rem; font-weight: 700; }
+  .tbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .tbtns button { min-height: 46px; border-radius: 10px; border: 2px solid var(--line); background: #faf8f4; font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; touch-action: manipulation; color: var(--ink); }
+  .tbtns button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .truth { display: none; font-size: .92rem; border-radius: 10px; padding: 10px 12px; background: #f0ede6; }
+  .revealed .truth { display: block; }
+  .ans.match { border-color: var(--good); } .ans.miss { border-color: var(--bad); }
+  .truth .row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+  textarea, input[type=text] { width: 100%; font: inherit; padding: 12px; border-radius: 10px; border: 2px solid var(--line); background: #fff; }
+  textarea { min-height: 80px; resize: vertical; }
+  .unlock { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .unlock input { max-width: 220px; }
+  #debrief { display: none; }
+  .revealed-page #debrief { display: block; }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <strong>AI for Secondary Teachers</strong><span class="sep">|</span>
+  <a href="index.html">Session 1</a>
+  <a href="sort.html">Rule or learned?</a>
+  <a href="alien.html">Teach the Alien</a>
+  <a href="teachable.html">Teachable Machine</a>
+  <a href="robo.html">The Robo-Marker</a>
+  <a href="chain.html">Word by word</a>
+</div></div>
+
+<main class="wrap">
+  <header class="hero">
+    <span class="kicker">Activity 5 &middot; unplugged thinking</span>
+    <h1>The Robo-Marker</h1>
+    <p class="lead">A school wants to save teachers time by training a model to mark short science answers. It has been given eight answers that a teacher has already marked. As with the Glorps, nobody tells it what a good answer looks like. It only sees the answers and the marks.</p>
+  </header>
+
+  <div class="question">
+    <div class="meta">Year 9 Science &middot; 1 mark</div>
+    <div class="q">During a storm, why do we see the lightning before we hear the thunder?</div>
+  </div>
+
+  <div class="round"><span class="num">1</span><h2>Training</h2></div>
+  <p>These are the eight answers the Robo-Marker learned from. In your group, work out what it is most likely to have picked up. Think like a machine, not like a science teacher: what is the <strong>easiest</strong> pattern that separates the two piles?</p>
+
+  <div class="answers" id="train"></div>
+
+  <div class="card" style="margin-top:16px">
+    <label for="rule"><strong>The Robo-Marker gives the mark when...</strong></label>
+    <textarea id="rule" placeholder="Type your group's guess here"></textarea>
+    <p class="note teal" style="margin:12px 0 0">Put your guess in one word into the Slido word cloud when the facilitator opens it.</p>
+  </div>
+
+  <div class="round"><span class="num">2</span><h2>Testing</h2></div>
+  <p>Six new answers arrive. For each one, predict what <strong>the Robo-Marker</strong> will do, using the pattern you found. Don't mark them yourself yet.</p>
+
+  <div class="answers" id="tests"></div>
+
+  <div class="round"><span class="num">3</span><h2>Now you be the teacher</h2></div>
+  <p>Look again at answers <strong>D</strong>, <strong>E</strong> and <strong>F</strong>. Would <em>you</em> give the mark? Vote on Slido, then compare with the rest of the room. If a room of teachers cannot agree, think about what that means for the "correct" labels a model is trained on.</p>
+  <div class="btn-row"><a class="btn" data-form="slido" href="#">Open Slido</a></div>
+
+  <div class="round"><span class="num">4</span><h2>The reveal</h2></div>
+  <p>Wait for the facilitator's unlock word.</p>
+  <div class="unlock no-print">
+    <input type="text" id="word" placeholder="Unlock word" autocomplete="off" autocapitalize="characters" aria-label="Unlock word">
+    <button class="btn coral" id="unlock" type="button">Reveal</button>
+    <span id="msg" aria-live="polite"></span>
+  </div>
+
+  <section id="debrief" class="stack" style="margin-top:20px">
+    <div class="card">
+      <h3>What the Robo-Marker learned</h3>
+      <p>In the training set, every answer with the mark was <strong>long</strong> and used the word <strong>"faster"</strong>. Every answer without the mark was short and did not. Either of those is far easier to detect than whether the pupil understood that light travels faster than sound, so that is what the model leans on.</p>
+      <p>The result: it rewards a long, confident, wrong answer (B) and refuses short correct ones (C, D, E). It is the Glorp problem again, only now the "colour" is word count and vocabulary.</p>
+    </div>
+    <div class="card">
+      <h3>Four things to take away</h3>
+      <ul>
+        <li><strong>Shortcut learning happens with text too.</strong> Length, vocabulary and confident phrasing are easy signals that often go with good answers but are not the same thing.</li>
+        <li><strong>Out of distribution.</strong> Answer D is correct, in Maltese. The model has never seen Maltese, so it has nothing to go on. Systems trained mostly on English often do worse with Maltese, and with pupils who switch between the two.</li>
+        <li><strong>Who pays for the shortcut?</strong> Answer E shows real understanding with weak spelling. A shortcut-driven marker would consistently penalise pupils with dyslexia, younger writers and those writing in a second language.</li>
+        <li><strong>Who decides the label?</strong> Teachers often split on F, which describes what happens without explaining why. A model trained on one teacher's marks learns that teacher's judgement and presents it as fact.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>This has happened</h3>
+      <p>Automated essay scoring systems have been criticised for rewarding length and unusual vocabulary. In 2014, writing researcher Les Perelman showed that essays of grammatical nonsense, produced by a program he built for the purpose, could score highly on automated scorers. Today's AI marking and feedback tools are far more capable, but the question is the same: what is the tool actually responding to?</p>
+    </div>
+    <div class="card">
+      <h3>Talk about it</h3>
+      <ul>
+        <li>How would you change the eight training answers so the Robo-Marker could not take this shortcut?</li>
+        <li>Would you trust an AI tool to give pupils feedback on short answers? What would you check first?</li>
+        <li>AI detectors claim to spot AI-written work. Based on today, what might they really be responding to?</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<script>
+var TRAIN = [
+  { t: "Light travels much faster than sound, so the flash reaches our eyes almost instantly while the sound of the thunder takes longer.", y: 1 },
+  { t: "Because the lightning happens first.", y: 0 },
+  { t: "Light is faster than sound. Light travels at about 300,000 km every second but sound only travels at about 340 metres every second.", y: 1 },
+  { t: "Thunder is made after the lightning.", y: 0 },
+  { t: "The lightning and thunder happen at the same moment, but light moves faster than sound waves do, so we see it before we hear it.", y: 1 },
+  { t: "The sound gets stuck in the clouds.", y: 0 },
+  { t: "Light waves are a lot faster than sound waves, so the thunder always arrives after the flash, especially when the storm is far away.", y: 1 },
+  { t: "Our eyes work quicker than our ears.", y: 0 }
+];
+var TESTS = [
+  { L: "A", t: "Light is a lot faster than sound, so the flash gets to our eyes before the bang gets to our ears.", robo: 1, teacher: "Mark. Correct, and the Robo-Marker agrees. The easy case." },
+  { L: "B", t: "Thunder is actually faster than lightning, but the sound has to travel down from the clouds through the air, which takes a few seconds, so we hear it later.", robo: 1, teacher: "No mark. Wrong science, but long and uses “faster”, so the Robo-Marker gives it the mark." },
+  { L: "C", t: "Sound is much slower than light.", robo: 0, teacher: "Mark. Short and correct. The Robo-Marker refuses it." },
+  { L: "D", t: "Id-dawl jivvjaġġa aktar malajr mill-ħoss.", robo: 0, teacher: "Correct, in Maltese (“Light travels faster than sound”). The model has never seen Maltese. Would you accept it in an English-medium exam?" },
+  { L: "E", t: "lite goes quicker then sownd so u see it 1st", robo: 0, teacher: "The understanding is there; the spelling is not. Most teachers give the mark for science. The Robo-Marker does not." },
+  { L: "F", t: "We see the light first because it gets to us first.", robo: 0, teacher: "Borderline. It describes what happens without explaining why. Teachers often split on this one." }
+];
+var train = document.getElementById("train");
+TRAIN.forEach(function (a) {
+  var d = document.createElement("div");
+  d.className = "ans " + (a.y ? "yes" : "no");
+  d.innerHTML = '<div class="mark">' + (a.y ? "✓ Mark given" : "✗ No mark") + '</div><div class="txt">' + a.t + '</div>';
+  train.appendChild(d);
+});
+var picks = {}, box = document.getElementById("tests");
+TESTS.forEach(function (a) {
+  var d = document.createElement("div");
+  d.className = "ans"; d.id = "a" + a.L;
+  d.innerHTML = '<div class="letter">' + a.L + '</div><div class="txt">' + a.t + '</div>' +
+    '<div class="tbtns" role="group" aria-label="What will the Robo-Marker do with answer ' + a.L + '?">' +
+      '<button type="button" data-l="' + a.L + '" data-v="1" aria-pressed="false">Robo gives mark</button>' +
+      '<button type="button" data-l="' + a.L + '" data-v="0" aria-pressed="false">Robo: no mark</button>' +
+    '</div><div class="truth"></div>';
+  box.appendChild(d);
+});
+box.addEventListener("click", function (e) {
+  var b = e.target.closest("button[data-v]"); if (!b) return;
+  picks[b.dataset.l] = +b.dataset.v;
+  b.parentNode.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+});
+function reveal() {
+  document.body.classList.add("revealed-page");
+  TESTS.forEach(function (a) {
+    var c = document.getElementById("a" + a.L), mine = picks[a.L];
+    c.classList.add("revealed"); c.classList.remove("match", "miss");
+    if (mine !== undefined) c.classList.add(mine === a.robo ? "match" : "miss");
+    c.querySelector(".truth").innerHTML =
+      '<div class="row"><span class="pill ' + (a.robo ? "" : "coral") + '">Robo-Marker: ' + (a.robo ? "mark" : "no mark") + '</span>' +
+      (mine === undefined ? "" : '<span class="pill grey">You predicted ' + (mine === a.robo ? "right" : "wrong") + '</span>') + '</div>' +
+      '<strong>A teacher’s view:</strong> ' + a.teacher;
+  });
+}
+document.getElementById("unlock").addEventListener("click", function () {
+  var want = ((window.SESSION_CONFIG || {}).revealWordRobo || "THUNDER").trim().toUpperCase();
+  var got = document.getElementById("word").value.trim().toUpperCase();
+  var msg = document.getElementById("msg");
+  if (got === want) { msg.textContent = ""; reveal(); document.getElementById("debrief").scrollIntoView({ behavior: "smooth" }); }
+  else { msg.textContent = "Not quite. Ask the facilitator."; }
+});
+document.getElementById("word").addEventListener("keydown", function (e) { if (e.key === "Enter") document.getElementById("unlock").click(); });
+</script>
+</body>
+</html>

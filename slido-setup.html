@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Slido Setup</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .q { border-top: 1px solid var(--line); padding: 12px 0; }
+  .q:first-of-type { border-top: 0; }
+  .q .qt { font-weight: 700; }
+  .q ul { margin: 6px 0 0; padding-left: 22px; }
+  .q .key { color: var(--good); font-weight: 700; }
+  .q .hint { color: var(--muted); font-size: .92rem; margin-top: 4px; }
+  .n { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; font-size: .85rem; margin-right: 6px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <span class="kicker">Facilitator only</span>
+    <h1>Slido polls for Session 1</h1>
+    <p class="lead">Create one Slido event for the session and add these polls in this order, so you only ever activate the next one. Then put the event link and code into <code>assets/config.js</code>. This page is not linked from the participant pages.</p>
+  </header>
+
+  <div class="note teal">Useful settings: allow anonymous participation, and switch on Q&amp;A for the whole event so questions can come in at any time. If you present from PowerPoint, the Slido add-in lets you insert any of these polls as a slide in the deck, next to the matching slide.</div>
+
+  <h2>Opening</h2>
+  <div class="card">
+    <div class="q"><div class="qt"><span class="n">1</span>Which of these use AI? <span class="pill grey">Multiple choice, allow several answers</span></div>
+      <ul><li>A calculator</li><li>Gmail's spam filter</li><li>TikTok's For You page</li><li>Spell-check in Word</li><li>Google Translate</li><li>Traffic lights</li><li>Snapchat filters</li><li>Photomath</li><li>A school timetabling program</li><li>Netflix recommendations</li></ul>
+      <div class="hint">Duplicate this poll for the exit ticket (poll 12) so you can show both results side by side.</div></div>
+    <div class="q"><div class="qt"><span class="n">2</span>How confident are you explaining to a pupil how AI learns? <span class="pill grey">Rating, 5 stars</span></div></div>
+  </div>
+
+  <h2>Teach the Alien</h2>
+  <div class="card">
+    <div class="q"><div class="qt"><span class="n">3</span>In one word: what makes a Glorp a Glorp? <span class="pill grey">Word cloud</span></div>
+      <div class="hint">Open it after Round 1. "Blue" and "spots" competing in the cloud is the moment you want.</div></div>
+    <div class="q"><div class="qt"><span class="n">4</span>Creature C: Glorp or not? <span class="pill grey">Multiple choice</span></div><ul><li>Glorp</li><li>Not a Glorp</li></ul></div>
+    <div class="q"><div class="qt"><span class="n">5</span>Creature D: Glorp or not? <span class="pill grey">Multiple choice</span></div><ul><li>Glorp</li><li>Not a Glorp</li></ul>
+      <div class="hint">Answers for you: A Glorp, B not, C not, D Glorp, E not, F Glorp. The rule is spots.</div></div>
+  </div>
+
+  <h2>Teachable Machine</h2>
+  <div class="card">
+    <div class="q"><div class="qt"><span class="n">6</span>In one word: what did your model really learn to look at? <span class="pill grey">Word cloud</span></div>
+      <div class="hint">Open it once most groups have posted to the Moodle forum. Expect "background", "colour", "fur", "ears", "grass". Very few clouds say "cat".</div></div>
+  </div>
+
+  <h2>Moodle forum for the failures</h2>
+  <div class="card">
+    <div class="q"><div class="qt">Forum type <span class="pill grey">Standard forum displayed in a blog-like format</span></div>
+      <div class="hint">Each group starts its own discussion, and the first post of every discussion shows on one page, so the forum reads as a gallery during the debrief.</div></div>
+    <div class="q"><div class="qt">Attachments</div>
+      <div class="hint">Set the maximum number of attachments to at least 3 and check the maximum attachment size allows phone screenshots (5MB is plenty).</div></div>
+    <div class="q"><div class="qt">Picture sets</div>
+      <div class="hint">One zip per set, each containing a Cats folder and a Dogs folder. Smaller images (around 400 to 600px wide) train noticeably faster on tablets.</div></div>
+    <div class="q"><div class="qt">Debrief</div>
+      <div class="hint">Pick three posts: one where the prediction was right and well explained, one cross-test where the picture fooled one model but not another, and one impostor with very high confidence.</div></div>
+  </div>
+
+  <h2>The Robo-Marker</h2>
+  <div class="card">
+    <div class="q"><div class="qt"><span class="n">7</span>In one word: what is the Robo-Marker looking for? <span class="pill grey">Word cloud</span></div>
+      <div class="hint">Expect "faster", "long", "length", "light", "keywords". The answer is length and the word "faster".</div></div>
+    <div class="q"><div class="qt"><span class="n">8</span>Answer D (correct, but in Maltese): would you give the mark? <span class="pill grey">Multiple choice</span></div><ul><li>Yes</li><li>No</li><li>It depends</li></ul></div>
+    <div class="q"><div class="qt"><span class="n">9</span>Answer E ("lite goes quicker then sownd so u see it 1st"): would you give the mark? <span class="pill grey">Multiple choice</span></div><ul><li>Yes</li><li>No</li><li>It depends</li></ul></div>
+    <div class="q"><div class="qt"><span class="n">10</span>Answer F ("We see the light first because it gets to us first"): would you give the mark? <span class="pill grey">Multiple choice</span></div><ul><li>Yes</li><li>No</li><li>It depends</li></ul>
+      <div class="hint">F usually splits the room. That split is the point: whose judgement becomes the training label?</div></div>
+  </div>
+
+  <h2>Word by word</h2>
+  <div class="card">
+    <div class="q"><div class="qt"><span class="n">11</span>Finish the sentence with ONE word: "Research shows that homework ..." <span class="pill grey">Word cloud</span></div>
+      <div class="hint">Run this before anyone opens the game page. The size of each word in the cloud is, in effect, a probability distribution over the next word, which is exactly what a language model computes.</div></div>
+  </div>
+
+  <h2>Exit ticket</h2>
+  <div class="card">
+    <div class="q"><div class="qt"><span class="n">12</span>Which of these use AI? <span class="pill grey">Duplicate of poll 1</span></div></div>
+    <div class="q"><div class="qt"><span class="n">13</span>Exit quiz <span class="pill grey">Quiz, 3 questions</span></div>
+      <div class="hint">Which of these is a rule-based system?</div>
+      <ul><li>Face unlock on a phone</li><li class="key">A cash machine checking a PIN</li><li>Google Translate</li><li>TikTok's For You page</li></ul>
+      <div class="hint">Which statement is correct?</div>
+      <ul><li>All AI is generative AI</li><li>Machine learning and deep learning are unrelated fields</li><li class="key">All generative AI is a kind of machine learning</li><li>Deep learning means following a very long list of rules</li></ul>
+      <div class="hint">Why did the Robo-Marker give the mark to answer B?</div>
+      <ul><li>Answer B was scientifically correct</li><li class="key">It was long and used the word "faster", like the marked training answers</li><li>The Robo-Marker understood the science</li><li>Answer B was in English</li></ul></div>
+    <div class="q"><div class="qt"><span class="n">14</span>Give one way a model trained on limited or unbalanced data could be unfair to some pupils. <span class="pill grey">Open text</span></div></div>
+    <div class="q"><div class="qt"><span class="n">15</span>How confident are you now explaining to a pupil how AI learns? <span class="pill grey">Rating, 5 stars</span></div>
+      <div class="hint">Read any Q&amp;A questions still open before Session 2 and start with two or three of them.</div></div>
+  </div>
+</main>
+</body>
+</html>
