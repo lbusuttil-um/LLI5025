@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rule or Learned?</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/config.js"></script>
+<style>
+  .dolls { display: block; }
+  .doll { border-radius: 18px; padding: 14px 14px 14px; border: 2px solid; }
+  .doll > .label { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 10px; }
+  .doll > .label strong { font-family: 'Fraunces', Georgia, serif; font-size: 1.1rem; }
+  .doll > .label span { font-size: .92rem; }
+  .doll.d1 { background: #eef5f5; border-color: #9cc6c9; }
+  .doll.d2 { background: #fdf3e2; border-color: #e3bf73; }
+  .doll.d3 { background: #fbe7e1; border-color: #e7a08d; }
+  .doll.d4 { background: #f1e9f7; border-color: #b69ad0; margin-bottom: 0; }
+  .doll .eg { font-size: .85rem; color: var(--muted); font-style: italic; }
+
+  .items { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
+  .item { background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .item .name { font-weight: 700; font-size: 1.05rem; }
+  .choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .choices button {
+    min-height: 46px; border-radius: 10px; border: 2px solid var(--line); background: #faf8f4;
+    font: inherit; font-size: .88rem; font-weight: 700; color: var(--ink); cursor: pointer; touch-action: manipulation; padding: 4px;
+  }
+  .choices button[aria-pressed="true"][data-v="rules"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .choices button[aria-pressed="true"][data-v="learned"] { background: var(--coral-soft); border-color: var(--coral); color: var(--coral); }
+  .choices button[aria-pressed="true"][data-v="both"] { background: var(--gold-soft); border-color: var(--gold); color: #8a6a10; }
+  .feedback { display: none; font-size: .92rem; border-radius: 10px; padding: 10px 12px; }
+  .checked .feedback { display: block; }
+  .item.right { border-color: var(--good); }
+  .item.right .feedback { background: var(--good-soft); }
+  .item.close { border-color: var(--gold); }
+  .item.close .feedback { background: var(--gold-soft); }
+  .item.wrong { border-color: var(--bad); }
+  .item.wrong .feedback { background: var(--bad-soft); }
+  .feedback .verdict { font-weight: 700; display: block; margin-bottom: 4px; }
+  .score { font-size: 1.1rem; font-weight: 700; }
+  .sticky-bar {
+    position: sticky; bottom: 0; z-index: 5; margin-top: 20px;
+    background: rgba(247,244,238,.96); border-top: 1px solid var(--line); padding: 12px 0;
+    display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <strong>AI for Secondary Teachers</strong><span class="sep">|</span>
+  <a href="index.html">Session 1</a>
+  <a href="sort.html">Rule or learned?</a>
+  <a href="alien.html">Teach the Alien</a>
+  <a href="teachable.html">Teachable Machine</a>
+  <a href="chain.html">Word by word</a>
+</div></div>
+
+<main class="wrap">
+  <header class="hero">
+    <span class="kicker">Activity 1</span>
+    <h1>Rule-based or learned from data?</h1>
+    <p class="lead">Some technology follows instructions a person wrote down. Some technology worked out its own way of deciding by looking at thousands or millions of examples. Telling the two apart is the first step to understanding what AI can and cannot do.</p>
+  </header>
+
+  <section class="card">
+    <h2 style="margin-top:0">The nesting dolls</h2>
+    <p>Each term sits inside the one before it. All generative AI is deep learning, all deep learning is machine learning, and all machine learning is AI. The reverse is not true.</p>
+    <div class="dolls" aria-label="Nested diagram: AI contains machine learning, which contains deep learning, which contains generative AI">
+      <div class="doll d1">
+        <div class="label"><strong>Artificial intelligence</strong><span>Any system that does something we would call intelligent if a person did it.</span></div>
+        <div class="eg" style="margin:-4px 0 10px">Includes old-style rule-based systems: a chess program from the 1980s, an expert system for diagnosing faults.</div>
+        <div class="doll d2">
+          <div class="label"><strong>Machine learning</strong><span>The system learns patterns from examples instead of being given rules.</span></div>
+          <div class="eg" style="margin:-4px 0 10px">A spam filter trained on emails that people marked as spam.</div>
+          <div class="doll d3">
+            <div class="label"><strong>Deep learning</strong><span>Machine learning with large neural networks of many layers, good with images, sound and language.</span></div>
+            <div class="eg" style="margin:-4px 0 10px">Face unlock, voice typing, Google Translate.</div>
+            <div class="doll d4">
+              <div class="label"><strong>Generative AI</strong><span>Deep learning models that produce new text, images, audio or code.</span></div>
+              <div class="eg">ChatGPT, Gemini, Claude, image generators.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <h2>Your turn: sort these</h2>
+  <p>For each technology, decide whether it works by <strong>following rules</strong> a programmer wrote, by <strong>learning from data</strong>, or a bit of <strong>both</strong>. Discuss in your group before you tap. Some of these are meant to cause an argument.</p>
+
+  <div class="items" id="items"></div>
+
+  <div class="sticky-bar no-print">
+    <span class="score" id="score" aria-live="polite">0 of 0 answered</span>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn ghost" id="reset" type="button">Start again</button>
+      <button class="btn" id="check" type="button">Check our answers</button>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:24px">
+    <h3>Talk about it</h3>
+    <ul>
+      <li>Which items did your group disagree about? What was the argument on each side?</li>
+      <li>Why does it matter to a teacher whether a tool follows rules or learned from data? Think about what happens when it gets something wrong.</li>
+      <li>Which of these do your pupils use every day without thinking of it as AI?</li>
+    </ul>
+  </div>
+</main>
+
+<script>
+var ITEMS = [
+  { n: "A calculator adding up a bill", a: "rules", layer: null,
+    why: "Every step is an instruction a programmer wrote. The same input always gives the same output." },
+  { n: "Gmail's spam filter", a: "learned", layer: "Machine learning",
+    why: "Trained on huge numbers of emails that people marked as spam or not spam. Nobody wrote a list of every spam phrase, and it keeps updating as people mark more." },
+  { n: "Traffic lights on a fixed timer", a: "rules", layer: null,
+    why: "Green for 40 seconds, amber for 4, red for 40. Pure rules. Some cities use adaptive systems that respond to traffic, which is a different story." },
+  { n: "TikTok's For You page", a: "learned", layer: "Machine learning, mostly deep learning",
+    why: "Learns from what you and millions of others watch, skip, replay and like. No one decided which video you would see next." },
+  { n: "A spreadsheet SUM formula", a: "rules", layer: null,
+    why: "Adds the numbers in the cells you give it. Nothing is learned." },
+  { n: "Face unlock on a phone", a: "learned", layer: "Deep learning",
+    why: "A neural network trained on many faces turns yours into a pattern it can recognise again, in different light and at different angles." },
+  { n: "Photomath solving a photographed equation", a: "both", layer: "Deep learning for reading, rules for solving",
+    why: "Reading messy handwriting from a photo is learned. Working through the algebra relies heavily on programmed mathematical rules." },
+  { n: "A basic thermostat that switches on below 20°C", a: "rules", layer: null,
+    why: "If the temperature is below 20, switch on. A smart thermostat that learns your daily routine would move towards learned." },
+  { n: "Google Translate", a: "learned", layer: "Deep learning",
+    why: "Learned from enormous collections of texts that exist in more than one language. Early translation software used hand-written grammar rules, which is partly why it was so poor." },
+  { n: "Autocorrect on your phone", a: "both", layer: "Rules plus machine learning",
+    why: "A dictionary check is rule-based. Guessing which word you meant, and learning words you use often, is learned from data." },
+  { n: "Exam timetabling software that avoids clashes", a: "rules", layer: null,
+    why: "A clever search through possibilities under constraints people set (no pupil in two exams at once). Impressive, but it does not learn from examples." },
+  { n: "Snapchat face filters", a: "learned", layer: "Deep learning",
+    why: "Finding your eyes, nose and mouth in a live video frame is done by a model trained on many images of faces." },
+  { n: "ChatGPT drafting a lesson plan", a: "learned", layer: "Generative AI",
+    why: "A large language model trained on vast amounts of text, generating a reply one word piece at a time. We play this game later in the session." },
+  { n: "A cash machine checking your PIN", a: "rules", layer: null,
+    why: "Does the number match? Three wrong tries and the card is kept. Rules all the way." },
+  { n: "Voice typing in Google Docs", a: "learned", layer: "Deep learning",
+    why: "Speech recognition is trained on many hours of recorded speech. It often struggles more with accents and languages that were less represented in that data, Maltese included." },
+  { n: "A self-checkout camera that recognises loose fruit", a: "learned", layer: "Deep learning",
+    why: "An image classifier trained on photos of fruit and vegetables. It is the same idea as the Teachable Machine models you will build after the break." },
+  { n: "A tool that claims to detect AI-written essays", a: "learned", layer: "Machine learning",
+    why: "Trained on examples of human and AI writing. These tools produce false accusations, especially against pupils writing in a second language. More on this in Session 2." }
+];
+var LABELS = { rules: "Rules", learned: "Learned", both: "Both" };
+var answers = {};
+var box = document.getElementById("items");
+
+function render() {
+  box.innerHTML = "";
+  ITEMS.forEach(function (it, i) {
+    var d = document.createElement("div");
+    d.className = "item";
+    d.id = "item" + i;
+    d.innerHTML =
+      '<div class="name">' + it.n + '</div>' +
+      '<div class="choices" role="group" aria-label="' + it.n + '">' +
+        ['rules','learned','both'].map(function (v) {
+          return '<button type="button" data-i="' + i + '" data-v="' + v + '" aria-pressed="false">' + LABELS[v] + '</button>';
+        }).join("") +
+      '</div>' +
+      '<div class="feedback" aria-live="polite"></div>';
+    box.appendChild(d);
+  });
+}
+
+box.addEventListener("click", function (e) {
+  var b = e.target.closest("button[data-v]");
+  if (!b) return;
+  var i = +b.dataset.i;
+  answers[i] = b.dataset.v;
+  var card = document.getElementById("item" + i);
+  card.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+  card.classList.remove("checked", "right", "wrong", "close");
+  updateScore();
+});
+
+function updateScore() {
+  document.getElementById("score").textContent = Object.keys(answers).length + " of " + ITEMS.length + " answered";
+}
+
+document.getElementById("check").addEventListener("click", function () {
+  var right = 0, done = 0;
+  ITEMS.forEach(function (it, i) {
+    var card = document.getElementById("item" + i);
+    var mine = answers[i];
+    if (!mine) return;
+    done++;
+    var cls, verdict;
+    if (mine === it.a) { cls = "right"; verdict = "Agreed."; right++; }
+    else if (it.a === "both" || mine === "both") { cls = "close"; verdict = "Partly. We'd say " + LABELS[it.a].toLowerCase() + "."; }
+    else { cls = "wrong"; verdict = "We'd say " + LABELS[it.a].toLowerCase() + "."; }
+    card.classList.remove("right", "wrong", "close");
+    card.classList.add("checked", cls);
+    card.querySelector(".feedback").innerHTML =
+      '<span class="verdict">' + verdict + '</span>' +
+      (it.layer ? '<span class="pill coral" style="margin-bottom:6px">' + it.layer + '</span><br>' : '') + it.why;
+  });
+  document.getElementById("score").textContent = done ? (right + " of " + done + " match our view") : "Choose some answers first";
+});
+
+document.getElementById("reset").addEventListener("click", function () {
+  answers = {}; render(); updateScore(); window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+render(); updateScore();
+</script>
+</body>
+</html>

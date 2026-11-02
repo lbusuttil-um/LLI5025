@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Train It, Break It</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/config.js"></script>
+<style>
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 18px; }
+  .chips button {
+    min-height: 44px; padding: 6px 16px; border-radius: 999px; border: 2px solid var(--line);
+    background: #fff; font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer; color: var(--ink);
+  }
+  .chips button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  .tm { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; }
+  .tm header { padding: 14px 18px; color: #fff; }
+  .tm header h3 { margin: 0 0 4px; color: #fff; }
+  .tm header .type { font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; opacity: .9; }
+  .tm .body { padding: 16px 18px; font-size: .95rem; }
+  .tm .body h4 { margin: 12px 0 4px; font-size: .82rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .tm .body h4:first-child { margin-top: 0; }
+  .tm .body ul { margin: 0; padding-left: 20px; }
+  .tm .body p { margin: 0; }
+  .t-image header { background: var(--accent); }
+  .t-audio header { background: var(--coral); }
+  .t-pose header { background: #6c449c; }
+  .t-any header { background: var(--ink); }
+  .challenge { display: grid; grid-template-columns: 48px 1fr; gap: 12px; align-items: start; }
+  .challenge .ico { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: var(--coral-soft); color: var(--coral); font-weight: 700; font-size: 1.2rem; }
+  .challenge h3 { margin-bottom: 2px; }
+  .challenge p { margin: 0; color: var(--muted); font-size: .95rem; }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <strong>AI for Secondary Teachers</strong><span class="sep">|</span>
+  <a href="index.html">Session 1</a>
+  <a href="sort.html">Rule or learned?</a>
+  <a href="alien.html">Teach the Alien</a>
+  <a href="teachable.html">Teachable Machine</a>
+  <a href="chain.html">Word by word</a>
+</div></div>
+
+<main class="wrap">
+  <header class="hero">
+    <span class="kicker">Activity 3 &middot; hands on</span>
+    <h1>Train it, then break it</h1>
+    <p class="lead">You will build a real image, sound or pose classifier for your subject in about fifteen minutes. Then you will spend the rest of the time trying to make it fail. The failures are the point: each one tells you something about how the model learned.</p>
+  </header>
+
+  <section class="card">
+    <h2 style="margin-top:0">Getting started</h2>
+    <ol class="steps">
+      <li>Open <a href="https://teachablemachine.withgoogle.com/train" target="_blank" rel="noopener">Teachable Machine</a> and choose <strong>Image</strong>, <strong>Audio</strong> or <strong>Pose</strong> to match your card below. For Image, pick the standard image model.</li>
+      <li>Rename each class with your labels. Add a class if your card has three.</li>
+      <li>Collect examples for every class using the webcam or microphone. Hold the record button and move the object around so you get different angles.</li>
+      <li>Press <strong>Train Model</strong> and keep the tab open while it trains. On a tablet this can take a little longer.</li>
+      <li>Test it live in the Preview panel. Note how confident the model is for each class.</li>
+      <li>Work through the four challenges below, then fill in the form.</li>
+    </ol>
+    <p class="note teal" style="margin:8px 0 0">Training happens in your browser and your images are not uploaded unless you choose to save the project to Google Drive. If you try this in school, check your school's policy before recording pupils' faces or voices.</p>
+  </section>
+
+  <h2>Pick your subject card</h2>
+  <div class="chips" id="chips" role="group" aria-label="Filter by subject"></div>
+  <div class="cards" id="cards"></div>
+
+  <h2>Four ways to break it</h2>
+  <p>Try each one. Record what happened to the confidence bars, not just whether the answer was right.</p>
+  <div class="grid grid-2">
+    <div class="card challenge"><div class="ico">1</div><div><h3>The stranger</h3><p>Train with one person's hands, face or voice, then test with someone else in the group. Does it work equally well for everyone?</p></div></div>
+    <div class="card challenge"><div class="ico">2</div><div><h3>The new room</h3><p>Change the background, the lighting or where you stand. Hold the object in front of a busy poster or a window.</p></div></div>
+    <div class="card challenge"><div class="ico">3</div><div><h3>The lopsided class</h3><p>Start a fresh model with about 60 examples of one class and only 6 of another. Which class does it favour when it is unsure?</p></div></div>
+    <div class="card challenge"><div class="ico">4</div><div><h3>The impostor</h3><p>Show it something that belongs to none of your classes. It has no way of saying "I don't know". How confident is its wrong answer?</p></div></div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h3>Record what you found</h3>
+    <p>One form per group: what you trained, what broke it, and why you think it broke. We will look at the best failures together.</p>
+    <a class="btn" data-form="teachable" href="#">Open the form</a>
+  </div>
+</main>
+
+<script>
+var CARDS = [
+  { s: "Science", t: "image", title: "Lab equipment",
+    classes: "Beaker, conical flask, measuring cylinder. No equipment to hand? Use three things from your bag, such as a pen, a phone charger and keys.",
+    collect: "About 40 to 60 images per class. Turn each object, move it closer and further, and use more than one of each if you can.",
+    breakit: ["Half fill one with water.", "Lay it on its side.", "Show only part of it at the edge of the frame."],
+    think: "Would a Year 7 class learn more from building this model or from using one that already works?" },
+  { s: "Geography", t: "image", title: "Cloud types",
+    classes: "Cumulus, stratus, cirrus. Search for photos on a phone and hold the screen up to the camera.",
+    collect: "Use several different photos for each class, not one photo from many angles.",
+    breakit: ["Show a cumulonimbus, a type it never saw.", "Show a cloud photo in black and white.", "Tilt the phone so the screen glares."],
+    think: "How many photos is the model really learning from, and how many is it learning about the screen?" },
+  { s: "Maltese and languages", t: "audio", title: "Words that sound alike",
+    classes: "Background Noise (Teachable Machine adds this for you), then two similar words, for example qalb and kalb in Maltese, palla and pala in Italian, or dessus and dessous in French.",
+    collect: "Record the background noise sample first. Then at least 8 samples of each word, ideally from two or three people.",
+    breakit: ["Test with a voice that did not record any samples.", "Whisper, or speak very fast.", "Test with background chatter from the next group."],
+    think: "Voice tools often work less well for Maltese and for some accents. Why might that be, given what you have seen today?" },
+  { s: "PE", t: "pose", title: "Movement check",
+    classes: "Standing, squat, lunge.",
+    collect: "Put the laptop on a desk and stand two or three metres back so your whole body is in frame. Collect 30 or more poses per class.",
+    breakit: ["Test with someone taller or shorter.", "Turn side-on to the camera.", "Do a half squat. Which class does it choose?"],
+    think: "If a tool like this marked pupils' technique, who would it be least fair to?" },
+  { s: "Maths", t: "image", title: "Shape spotter",
+    classes: "Triangle, quadrilateral, circle. Draw them large on a tablet drawing app or a mini whiteboard.",
+    collect: "Draw each shape several times in different sizes and positions.",
+    breakit: ["Draw a very thin triangle.", "Rotate a square by 45 degrees.", "Draw a pentagon, which belongs to no class."],
+    think: "A person can tell you why it is a triangle. What is the model using to decide?" },
+  { s: "Business and economics", t: "image", title: "Coin sorter",
+    classes: "10c, 20c and 50c euro coins, which are close in colour and size.",
+    collect: "Use the Maltese side of several coins, at different angles.",
+    breakit: ["Flip to the common side with the map.", "Show the national side from another country.", "Show a 1 euro coin."],
+    think: "A model trained only on Maltese coins meets a coin from Italy. What does that tell you about training data from one place?" },
+  { s: "Art and design", t: "image", title: "Line or colour",
+    classes: "Line drawing, coloured painting. Make a few quick ones on a tablet or find examples online.",
+    collect: "Use as many different pictures as you can, not one picture from many angles.",
+    breakit: ["Show a line drawing done in bright colours.", "Show a photograph.", "Show a black and white painting."],
+    think: "Who decided where the line between the two classes sits, and would another artist agree?" },
+  { s: "Computing", t: "image", title: "Gesture controller",
+    classes: "Thumbs up, thumbs down, open palm.",
+    collect: "One person collects 40 or more images per class. Models like this can be exported and used to control games, including in Scratch.",
+    breakit: ["Use the other hand.", "Test with every member of the group in turn.", "Wear a glove or hold something."],
+    think: "If this controlled a game in class, which pupils might find it does not respond to them?" },
+  { s: "Any subject", t: "any", title: "Your own idea",
+    classes: "Two or three classes from something you teach. Keep them visual, audible or physical.",
+    collect: "Aim for variety in every class: different people, angles and backgrounds.",
+    breakit: ["Use the four challenges below.", "Find the input that gives the most confident wrong answer."],
+    think: "Would building this model teach your pupils anything about your subject, or only about AI?" }
+];
+var TYPE = { image: "Image project", audio: "Audio project", pose: "Pose project", any: "Image, audio or pose" };
+var chips = document.getElementById("chips"), cards = document.getElementById("cards");
+var subjects = ["All"].concat(CARDS.map(function (c) { return c.s; }));
+subjects.forEach(function (s, i) {
+  var b = document.createElement("button");
+  b.type = "button"; b.textContent = s; b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+  b.addEventListener("click", function () {
+    chips.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+    draw(s);
+  });
+  chips.appendChild(b);
+});
+function draw(filter) {
+  cards.innerHTML = "";
+  CARDS.filter(function (c) { return filter === "All" || c.s === filter; }).forEach(function (c) {
+    var a = document.createElement("article");
+    a.className = "tm t-" + c.t;
+    a.innerHTML =
+      '<header><div class="type">' + c.s + ' &middot; ' + TYPE[c.t] + '</div><h3>' + c.title + '</h3></header>' +
+      '<div class="body">' +
+        '<h4>Classes</h4><p>' + c.classes + '</p>' +
+        '<h4>Collect</h4><p>' + c.collect + '</p>' +
+        '<h4>Subject-specific ways to break it</h4><ul>' + c.breakit.map(function (x) { return "<li>" + x + "</li>"; }).join("") + '</ul>' +
+        '<h4>Think about</h4><p>' + c.think + '</p>' +
+      '</div>';
+    cards.appendChild(a);
+  });
+}
+draw("All");
+</script>
+</body>
+</html>

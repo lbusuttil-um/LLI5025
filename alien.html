@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teach the Alien</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/config.js"></script>
+<style>
+  .round { display: flex; align-items: center; gap: 10px; margin: 36px 0 8px; }
+  .round .num {
+    width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--ink); color: #fff; font-weight: 700; flex: none;
+  }
+  .round h2 { margin: 0; }
+  .set { border-radius: var(--radius); padding: 16px; border: 2px solid; }
+  .set.yes { background: #eaf3fb; border-color: #9cc0e6; }
+  .set.no { background: #f6f2ea; border-color: #d9cfbd; }
+  .set h3 { margin-bottom: 10px; }
+  .creatures { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+  .creatures img { width: 100%; height: auto; background: #fff; border-radius: 12px; padding: 6px; display: block; }
+  .tests { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .test { background: var(--card); border: 2px solid var(--line); border-radius: var(--radius); padding: 12px; text-align: center; }
+  .test img { width: 70%; max-width: 160px; height: auto; display: block; margin: 0 auto 6px; }
+  .test .letter { font-family: 'Fraunces', Georgia, serif; font-size: 1.3rem; font-weight: 700; }
+  .tbtns { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+  .tbtns button {
+    min-height: 46px; border-radius: 10px; border: 2px solid var(--line); background: #faf8f4;
+    font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; touch-action: manipulation; color: var(--ink);
+  }
+  .tbtns button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .truth { display: none; margin-top: 10px; font-size: .9rem; text-align: left; border-radius: 10px; padding: 8px 10px; }
+  .revealed .truth { display: block; }
+  .test.match { border-color: var(--good); } .test.match .truth { background: var(--good-soft); }
+  .test.miss { border-color: var(--bad); } .test.miss .truth { background: var(--bad-soft); }
+  .test.none .truth { background: #f0ede6; }
+  textarea, input[type=text] {
+    width: 100%; font: inherit; padding: 12px; border-radius: 10px; border: 2px solid var(--line); background: #fff;
+  }
+  textarea { min-height: 80px; resize: vertical; }
+  .unlock { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .unlock input { max-width: 220px; }
+  #debrief { display: none; }
+  .revealed-page #debrief { display: block; }
+  dl.terms { display: grid; grid-template-columns: max-content 1fr; gap: 8px 16px; margin: 0; }
+  dl.terms dt { font-weight: 700; }
+  dl.terms dd { margin: 0; }
+  @media (max-width: 520px) { dl.terms { grid-template-columns: 1fr; } dl.terms dd { margin-bottom: 8px; } }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <strong>AI for Secondary Teachers</strong><span class="sep">|</span>
+  <a href="index.html">Session 1</a>
+  <a href="sort.html">Rule or learned?</a>
+  <a href="alien.html">Teach the Alien</a>
+  <a href="teachable.html">Teachable Machine</a>
+  <a href="chain.html">Word by word</a>
+</div></div>
+
+<main class="wrap">
+  <header class="hero">
+    <span class="kicker">Activity 2 &middot; unplugged thinking</span>
+    <h1>Teach the Alien</h1>
+    <p class="lead">You are a machine learning model. Nobody will tell you the rule. All you get is a set of examples with labels, and from these you must work out how to tell a <strong>Glorp</strong> from anything else.</p>
+  </header>
+
+  <div class="round"><span class="num">1</span><h2>Training</h2></div>
+  <p>Study the twelve labelled examples with your group. Agree on <strong>one rule</strong> that tells you whether a creature is a Glorp. Write it down before you scroll further.</p>
+
+  <div class="grid grid-2">
+    <div class="set yes">
+      <h3>These are Glorps</h3>
+      <div class="creatures">
+        <img src="assets/creatures/g1.svg" alt="Glorp 1">
+        <img src="assets/creatures/g2.svg" alt="Glorp 2">
+        <img src="assets/creatures/g3.svg" alt="Glorp 3">
+        <img src="assets/creatures/g4.svg" alt="Glorp 4">
+        <img src="assets/creatures/g5.svg" alt="Glorp 5">
+        <img src="assets/creatures/g6.svg" alt="Glorp 6">
+      </div>
+    </div>
+    <div class="set no">
+      <h3>These are NOT Glorps</h3>
+      <div class="creatures">
+        <img src="assets/creatures/n1.svg" alt="Not a Glorp 1">
+        <img src="assets/creatures/n2.svg" alt="Not a Glorp 2">
+        <img src="assets/creatures/n3.svg" alt="Not a Glorp 3">
+        <img src="assets/creatures/n4.svg" alt="Not a Glorp 4">
+        <img src="assets/creatures/n5.svg" alt="Not a Glorp 5">
+        <img src="assets/creatures/n6.svg" alt="Not a Glorp 6">
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <label for="rule"><strong>Our rule:</strong> a creature is a Glorp if...</label>
+    <textarea id="rule" placeholder="Type your group's rule here"></textarea>
+  </div>
+
+  <div class="round"><span class="num">2</span><h2>Testing</h2></div>
+  <p>Here are six creatures the model has never seen. Use <strong>your rule</strong> to decide each one. There is no "not sure" button, because a classifier trained on two labels has to pick one of them. Notice how that feels.</p>
+
+  <div class="tests" id="tests"></div>
+
+  <div class="btn-row">
+    <a class="btn" data-form="alien" href="#">Send our rule and answers</a>
+  </div>
+  <p class="note teal" style="margin-top:12px">In the form, give your group name, your rule, and your answer for each letter A to F.</p>
+
+  <div class="round"><span class="num">3</span><h2>The reveal</h2></div>
+  <p>Wait for the facilitator, who will give you the word that unlocks the answers.</p>
+  <div class="unlock no-print">
+    <input type="text" id="word" placeholder="Unlock word" autocomplete="off" autocapitalize="characters" aria-label="Unlock word">
+    <button class="btn coral" id="unlock" type="button">Reveal</button>
+    <span id="msg" aria-live="polite"></span>
+  </div>
+
+  <section id="debrief" class="stack" style="margin-top:20px">
+    <div class="card">
+      <h3>The real rule</h3>
+      <p><strong>A Glorp is any creature with spots.</strong> Colour, shape, number of eyes, antennae and legs have nothing to do with it.</p>
+      <p>The trouble is that every Glorp in the training set also happened to be blue, and none of the other creatures were. Colour was a perfect predictor in the training data, and it is much easier to see than spots. Many groups learn "blue means Glorp", which works on every training example and fails on creatures C and D.</p>
+    </div>
+    <div class="card">
+      <h3>What just happened, in machine learning terms</h3>
+      <dl class="terms">
+        <dt>Training data</dt><dd>The twelve examples you studied.</dd>
+        <dt>Labels</dt><dd>"Glorp" and "not a Glorp". Someone had to decide these, and the model trusts them completely.</dd>
+        <dt>Features</dt><dd>The things you could look at: colour, spots, shape, eyes, antennae, legs.</dd>
+        <dt>Prediction</dt><dd>Your answer for each test creature.</dd>
+        <dt>Shortcut learning</dt><dd>Picking up a feature that happens to go with the label in the training data (blue) instead of the one that really matters (spots).</dd>
+        <dt>Out of distribution</dt><dd>Creature E has stripes, which never appeared in training. The model still has to answer, and it will often answer confidently.</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <h3>This happens with real systems</h3>
+      <p>In a well-known 2016 study, researchers trained an image classifier to tell huskies from wolves using photos in which the wolves mostly stood in snow. The model learned to detect snow. Medical models have done the same: chest X-ray classifiers picked up which hospital an image came from, and skin cancer classifiers reacted to rulers and pen marks that doctors had added to photos of suspicious moles.</p>
+      <p>Now think about a system trained mostly on one group of pupils, one accent or one kind of school. What will it have learned that has nothing to do with the task?</p>
+    </div>
+    <div class="card">
+      <h3>Talk about it</h3>
+      <ul>
+        <li>What would you need to add to the training set so that colour stops being a useful shortcut?</li>
+        <li>Creature F has only two small spots. Should it count? Who decides, and what happens to the model if the people labelling disagree?</li>
+        <li>Where might a shortcut like this show up in something your pupils use?</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<script>
+var TESTS = [
+  { id: "t1", L: "A", truth: "glorp", why: "Blue and spotted. Both rules agree, so this one is easy." },
+  { id: "t2", L: "B", truth: "not",   why: "Green, no spots. Both rules agree again." },
+  { id: "t3", L: "C", truth: "not",   why: "Blue, but no spots. The colour shortcut gets this wrong." },
+  { id: "t4", L: "D", truth: "glorp", why: "Orange with spots. A Glorp, even though no orange Glorp appeared in training." },
+  { id: "t5", L: "E", truth: "not",   why: "Stripes, no spots. Stripes never appeared in training, so any rule is a guess. The alien biologists call this a Zundle." },
+  { id: "t6", L: "F", truth: "glorp", why: "Only two small spots, and purple. Spots, so a Glorp, but a borderline case that groups often argue about." }
+];
+var picks = {};
+var wrap = document.getElementById("tests");
+TESTS.forEach(function (t) {
+  var d = document.createElement("div");
+  d.className = "test"; d.id = "c" + t.id;
+  d.innerHTML = '<div class="letter">' + t.L + '</div>' +
+    '<img src="assets/creatures/' + t.id + '.svg" alt="Test creature ' + t.L + '">' +
+    '<div class="tbtns" role="group" aria-label="Creature ' + t.L + '">' +
+      '<button type="button" data-id="' + t.id + '" data-v="glorp" aria-pressed="false">Glorp</button>' +
+      '<button type="button" data-id="' + t.id + '" data-v="not" aria-pressed="false">Not a Glorp</button>' +
+    '</div><div class="truth"></div>';
+  wrap.appendChild(d);
+});
+wrap.addEventListener("click", function (e) {
+  var b = e.target.closest("button[data-v]"); if (!b) return;
+  picks[b.dataset.id] = b.dataset.v;
+  b.parentNode.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+});
+
+function reveal() {
+  document.body.classList.add("revealed-page");
+  TESTS.forEach(function (t) {
+    var c = document.getElementById("c" + t.id);
+    var mine = picks[t.id];
+    c.classList.add("revealed");
+    c.classList.remove("match", "miss", "none");
+    c.classList.add(!mine ? "none" : (mine === t.truth ? "match" : "miss"));
+    c.querySelector(".truth").innerHTML = "<strong>" + (t.truth === "glorp" ? "Glorp." : "Not a Glorp.") + "</strong> " + t.why;
+  });
+}
+document.getElementById("unlock").addEventListener("click", function () {
+  var want = ((window.SESSION_CONFIG || {}).revealWord || "GOZO").trim().toUpperCase();
+  var got = document.getElementById("word").value.trim().toUpperCase();
+  var msg = document.getElementById("msg");
+  if (got === want) { msg.textContent = ""; reveal(); document.getElementById("debrief").scrollIntoView({ behavior: "smooth" }); }
+  else { msg.textContent = "Not quite. Ask the facilitator."; }
+});
+document.getElementById("word").addEventListener("keydown", function (e) { if (e.key === "Enter") document.getElementById("unlock").click(); });
+</script>
+</body>
+</html>

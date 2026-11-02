@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Forms Setup</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .q { border-top: 1px solid var(--line); padding: 12px 0; }
+  .q:first-of-type { border-top: 0; }
+  .q .qt { font-weight: 700; }
+  .q .type { margin-left: 6px; }
+  .q ul { margin: 6px 0 0; padding-left: 22px; }
+  .q .key { color: var(--good); font-weight: 700; }
+  .q .hint { color: var(--muted); font-size: .92rem; margin-top: 4px; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <span class="kicker">Facilitator only</span>
+    <h1>Google Forms for Session 1</h1>
+    <p class="lead">Four short forms. Build each in Google Forms, then paste its share link into <code>assets/config.js</code>. This page is not linked from the participant pages, but anyone with the address can open it, so leave it out of the repository if you prefer.</p>
+  </header>
+
+  <div class="note teal">For every form: in Settings, turn off "Collect email addresses" and "Limit to 1 response" unless you want sign-in, so participants on tablets without a Google account can answer. For the two quizzes, turn on "Make this a quiz" and set answers to release after the session.</div>
+
+  <h2>1. Opening poll: Which of these use AI?</h2>
+  <div class="card">
+    <div class="q"><div class="qt">Which of these use AI? Tick all that you think do. <span class="pill grey type">Checkboxes</span></div>
+      <ul><li>A calculator</li><li>Gmail's spam filter</li><li>TikTok's For You page</li><li>Spell-check in Word</li><li>Google Translate</li><li>Traffic lights</li><li>Snapchat filters</li><li>Photomath</li><li>A school timetabling program</li><li>Netflix recommendations</li></ul>
+      <div class="hint">Repeat this exact question in the exit ticket so you can compare the two charts in the Responses tab.</div></div>
+    <div class="q"><div class="qt">How confident are you explaining to a pupil how AI learns? <span class="pill grey type">Linear scale 1 to 5</span></div>
+      <div class="hint">1 = not at all, 5 = very confident.</div></div>
+  </div>
+
+  <h2>2. Teach the Alien: our rule and answers</h2>
+  <div class="card">
+    <div class="q"><div class="qt">Group name <span class="pill grey type">Short answer</span></div></div>
+    <div class="q"><div class="qt">Our rule: a creature is a Glorp if... <span class="pill grey type">Paragraph</span></div></div>
+    <div class="q"><div class="qt">Our answers <span class="pill grey type">Multiple choice grid</span></div>
+      <div class="hint">Rows: Creature A, B, C, D, E, F. Columns: Glorp, Not a Glorp. Require one response per row.</div>
+      <div class="hint">Answer key (for you, not entered into the form): A Glorp, B Not, C Not, D Glorp, E Not, F Glorp.</div></div>
+    <div class="q"><div class="qt">Which creature were you least sure about, and why? <span class="pill grey type">Short answer</span></div></div>
+    <p class="hint" style="margin:8px 0 0">Show the summary chart for the grid during the reveal. Creatures C and D usually split the room, which is your way into shortcut learning.</p>
+  </div>
+
+  <h2>3. Teachable Machine: what broke our model</h2>
+  <div class="card">
+    <div class="q"><div class="qt">Group name <span class="pill grey type">Short answer</span></div></div>
+    <div class="q"><div class="qt">Subject card <span class="pill grey type">Dropdown</span></div>
+      <div class="hint">Science, Geography, Maltese and languages, PE, Maths, Business and economics, Art and design, Computing, Own idea.</div></div>
+    <div class="q"><div class="qt">What did you train it on? Name your classes and roughly how many examples each. <span class="pill grey type">Paragraph</span></div></div>
+    <div class="q"><div class="qt">Which challenges did you try? <span class="pill grey type">Checkboxes</span></div>
+      <ul><li>The stranger</li><li>The new room</li><li>The lopsided class</li><li>The impostor</li><li>One of our subject-specific challenges</li></ul></div>
+    <div class="q"><div class="qt">Describe your best failure. What did you show it, and what did it predict? <span class="pill grey type">Paragraph</span></div></div>
+    <div class="q"><div class="qt">Why do you think it failed? <span class="pill grey type">Paragraph</span></div>
+      <div class="hint">Prompt in the description: think about what was, and was not, in the training data.</div></div>
+    <div class="q"><div class="qt">Optional: upload a screenshot of the failure <span class="pill grey type">File upload</span></div>
+      <div class="hint">File upload forces sign-in with a Google account. Leave this question out if participants may not have one.</div></div>
+  </div>
+
+  <h2>4. Exit ticket</h2>
+  <div class="card">
+    <div class="q"><div class="qt">Group name or your initials <span class="pill grey type">Short answer</span></div></div>
+    <div class="q"><div class="qt">Which of these is a rule-based system? <span class="pill grey type">Multiple choice, 1 point</span></div>
+      <ul><li>Face unlock on a phone</li><li class="key">A cash machine checking a PIN</li><li>Google Translate</li><li>TikTok's For You page</li></ul></div>
+    <div class="q"><div class="qt">Which statement is correct? <span class="pill grey type">Multiple choice, 1 point</span></div>
+      <ul><li>All AI is generative AI</li><li>Machine learning and deep learning are separate, unrelated fields</li><li class="key">All generative AI is a kind of machine learning</li><li>Deep learning means the system follows a very long list of rules</li></ul></div>
+    <div class="q"><div class="qt">Many groups decided the blue creature without spots was a Glorp. Why? <span class="pill grey type">Multiple choice, 1 point</span></div>
+      <ul><li>The test creature was badly drawn</li><li class="key">Every Glorp in the training data was blue, so colour looked like the rule</li><li>There were too many test creatures</li><li>Glorps can be any colour</li></ul></div>
+    <div class="q"><div class="qt">Using your Teachable Machine model, name the training data, the labels and one prediction it made. <span class="pill grey type">Paragraph</span></div></div>
+    <div class="q"><div class="qt">Give one way a model trained on limited or unbalanced data could be unfair to some pupils. <span class="pill grey type">Paragraph</span></div></div>
+    <div class="q"><div class="qt">Which of these use AI? Tick all that you think do. <span class="pill grey type">Checkboxes</span></div>
+      <div class="hint">Same ten options as the opening poll.</div></div>
+    <div class="q"><div class="qt">How confident are you now explaining to a pupil how AI learns? <span class="pill grey type">Linear scale 1 to 5</span></div></div>
+    <div class="q"><div class="qt">One question you still have <span class="pill grey type">Short answer, optional</span></div>
+      <div class="hint">Read these before Session 2 and pick two or three to open with.</div></div>
+  </div>
+</main>
+</body>
+</html>

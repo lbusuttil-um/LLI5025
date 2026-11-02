@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word by Word</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/config.js"></script>
+<style>
+  .sentence {
+    font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.3rem, 3.2vw, 1.8rem); line-height: 1.4;
+    background: var(--ink); color: #fff; border-radius: var(--radius); padding: 22px 22px; min-height: 120px;
+  }
+  .sentence .prompt { opacity: .7; }
+  .sentence .gen { color: #ffd59e; }
+  .sentence .cursor { display: inline-block; width: .55em; height: 1.05em; vertical-align: -.15em; background: #ffd59e; margin-left: 3px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .modes { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .modes button {
+    min-height: 44px; padding: 6px 16px; border-radius: 999px; border: 2px solid var(--line); background: #fff;
+    font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer; color: var(--ink);
+  }
+  .modes button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .options { display: grid; gap: 10px; }
+  .opt {
+    display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; text-align: left;
+    background: #fff; border: 2px solid var(--line); border-radius: 12px; padding: 12px 14px;
+    font: inherit; color: var(--ink); cursor: pointer; touch-action: manipulation; width: 100%;
+  }
+  .opt:hover { border-color: var(--accent); }
+  .opt .w { font-weight: 700; }
+  .opt .pct { font-variant-numeric: tabular-nums; color: var(--muted); font-weight: 700; }
+  .opt .bar { grid-column: 1 / -1; height: 10px; border-radius: 6px; background: #eeeae2; overflow: hidden; }
+  .opt .bar span { display: block; height: 100%; background: var(--accent); border-radius: 6px; }
+  .opt.chosen { border-color: var(--coral); background: var(--coral-soft); }
+  .opt.chosen .bar span { background: var(--coral); }
+  .opt[disabled] { cursor: default; }
+  .history { list-style: none; padding: 0; margin: 0; }
+  .history li { padding: 10px 0; border-top: 1px solid var(--line); font-size: .98rem; }
+  .history li:first-child { border-top: 0; }
+  #after { display: none; }
+  .done #after { display: block; }
+</style>
+</head>
+<body>
+<div class="topbar"><div class="wrap">
+  <strong>AI for Secondary Teachers</strong><span class="sep">|</span>
+  <a href="index.html">Session 1</a>
+  <a href="sort.html">Rule or learned?</a>
+  <a href="alien.html">Teach the Alien</a>
+  <a href="teachable.html">Teachable Machine</a>
+  <a href="chain.html">Word by word</a>
+</div></div>
+
+<main class="wrap">
+  <header class="hero">
+    <span class="kicker">Activity 4</span>
+    <h1>Word by word</h1>
+    <p class="lead">A language model writes by asking one question over and over: given everything so far, which piece of text is most likely to come next? It does not look anything up. Play the model and see what that produces.</p>
+  </header>
+
+  <p class="note" style="margin-bottom:16px">We play this together first, without devices: each person adds the word they think is most likely, and the sentence goes round the room. Then try it here in your group.</p>
+
+  <div class="sentence" id="sentence" aria-live="polite"></div>
+
+  <div class="modes no-print" role="group" aria-label="How to choose the next words" id="modes">
+    <button type="button" data-m="choose" aria-pressed="true">We choose</button>
+    <button type="button" data-m="greedy" aria-pressed="false">Always the most likely</button>
+    <button type="button" data-m="dice" aria-pressed="false">Roll the dice</button>
+  </div>
+
+  <div class="options" id="options"></div>
+
+  <div class="btn-row no-print">
+    <button class="btn ghost" type="button" id="restart">Start again</button>
+    <button class="btn" type="button" id="five">Generate five answers</button>
+  </div>
+
+  <section class="card" style="margin-top:20px" id="runs-card" hidden>
+    <h3>Five runs, rolling the dice each time</h3>
+    <ul class="history" id="runs"></ul>
+  </section>
+
+  <section id="after" class="stack" style="margin-top:20px">
+    <div class="card">
+      <h3>Is it true?</h3>
+      <p>Read your sentence back. It is fluent, specific and sounds like a fact you could put in a lesson or a report. <strong>The game has no idea whether any such study, report or figure exists.</strong> It only knew which words tend to follow which. Every percentage and source in it was chosen because it sounded likely.</p>
+      <p>Real language models work with far more context and far better probabilities, so their output is usually much more accurate than this. The mechanism is the same, though, and so is the risk: when the likely-sounding answer and the true answer differ, the model has no built-in way of noticing. This is what people mean by a <em>hallucination</em>, and invented references are one of the most common kinds.</p>
+    </div>
+    <div class="card">
+      <h3>Talk about it</h3>
+      <ul>
+        <li>Why did "Always the most likely" give the same sentence every time, while "Roll the dice" did not? Which is more useful for writing a worksheet, and which for checking a fact?</li>
+        <li>Most AI-written essays sound smooth and a little generic. How does this game explain that?</li>
+        <li>A pupil hands in work citing "a 2019 University of Malta study". What would you do?</li>
+      </ul>
+      <p style="margin:0">In Session 2 we go hunting for errors like these in real AI output.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+var PROMPT = "Research shows that homework";
+var POS = ["improves", "boosts"];
+var STEPS = [
+  function () { return [["improves", 46], ["boosts", 22], ["reduces", 18], ["harms", 14]]; },
+  function (prev) {
+    return POS.indexOf(prev[0]) > -1
+      ? [["exam results", 45], ["reading skills", 25], ["motivation", 20], ["sleep", 10]]
+      : [["sleep", 40], ["motivation", 30], ["exam results", 20], ["reading skills", 10]];
+  },
+  function () { return [["by about 23%", 38], ["by up to 40%", 27], ["in most secondary schools", 20], ["for pupils aged 11 to 16", 15]]; },
+  function () { return [["according to a 2019 University of Malta study.", 34], ["according to a recent OECD report.", 28], ["according to researchers at Oxford.", 22], ["according to leading experts.", 16]]; }
+];
+var chosen = [], mode = "choose", run = 0;
+var sentence = document.getElementById("sentence"), options = document.getElementById("options");
+
+function text(list) { return list.join(" "); }
+function weighted(opts) {
+  var total = opts.reduce(function (s, o) { return s + o[1]; }, 0), r = Math.random() * total;
+  for (var i = 0; i < opts.length; i++) { r -= opts[i][1]; if (r <= 0) return opts[i][0]; }
+  return opts[opts.length - 1][0];
+}
+function pick(opts) { return mode === "greedy" ? opts[0][0] : weighted(opts); }
+
+function draw() {
+  var finished = chosen.length === STEPS.length;
+  sentence.innerHTML = '<span class="prompt">' + PROMPT + '</span> <span class="gen">' + text(chosen) + '</span>' + (finished ? '' : '<span class="cursor"></span>');
+  options.innerHTML = "";
+  document.body.classList.toggle("done", finished);
+  if (finished) return;
+  var opts = STEPS[chosen.length](chosen);
+  opts.forEach(function (o) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "opt";
+    b.innerHTML = '<span class="w">' + o[0] + '</span><span class="pct">' + o[1] + '%</span><span class="bar"><span style="width:' + o[1] + '%"></span></span>';
+    b.setAttribute("aria-label", o[0] + ", " + o[1] + " percent likely");
+    if (mode !== "choose") b.disabled = true;
+    b.addEventListener("click", function () { if (mode === "choose") { choose(o[0]); } });
+    options.appendChild(b);
+  });
+  if (mode !== "choose") {
+    var next = pick(opts), mine = run;
+    setTimeout(function () {
+      if (mine !== run) return;
+      options.querySelectorAll(".opt").forEach(function (x) { if (x.querySelector(".w").textContent === next) x.classList.add("chosen"); });
+      setTimeout(function () { if (mine === run) choose(next); }, 900);
+    }, 700);
+  }
+}
+function choose(w) { chosen.push(w); draw(); }
+
+document.getElementById("modes").addEventListener("click", function (e) {
+  var b = e.target.closest("button[data-m]"); if (!b) return;
+  mode = b.dataset.m;
+  this.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+  run++; chosen = []; draw();
+});
+document.getElementById("restart").addEventListener("click", function () { run++; chosen = []; document.getElementById("runs-card").hidden = true; draw(); });
+document.getElementById("five").addEventListener("click", function () {
+  var ul = document.getElementById("runs"); ul.innerHTML = "";
+  for (var r = 0; r < 5; r++) {
+    var c = [];
+    for (var s = 0; s < STEPS.length; s++) c.push(weighted(STEPS[s](c)));
+    var li = document.createElement("li"); li.textContent = PROMPT + " " + text(c); ul.appendChild(li);
+  }
+  document.getElementById("runs-card").hidden = false;
+  document.body.classList.add("done");
+  document.getElementById("runs-card").scrollIntoView({ behavior: "smooth", block: "nearest" });
+});
+draw();
+</script>
+</body>
+</html>
